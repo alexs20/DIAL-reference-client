@@ -1,9 +1,7 @@
-package com.wolandsoft.dial.client;
+package com.wolandsoft.dial.client.discovery;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,7 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.wolandsoft.dial.client.SSDPParser.SSDPResponce;
+import com.wolandsoft.dial.client.discovery.SSDPParser;
+import com.wolandsoft.dial.client.discovery.SSDPResponce;
 
 /**
  * Unit test for simple App.
