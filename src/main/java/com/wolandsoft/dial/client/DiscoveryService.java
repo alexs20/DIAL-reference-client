@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.wolandsoft.dial.client.SSDPParser.SSDPResponce;
+
 public class DiscoveryService implements Closeable {
 
 	private final static String MC_ADDRESS = "239.255.255.250";
@@ -51,7 +53,9 @@ public class DiscoveryService implements Closeable {
 						System.out.println("Entering in blocking mode");
 						serverSocket.receive(packet);
 						String response = new String(packet.getData());
-						System.out.println(response);
+						
+						SSDPResponce resp = SSDPParser.parse(response);
+						System.out.println(resp);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -73,7 +77,7 @@ public class DiscoveryService implements Closeable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}}, DISCOVERY_INTERVAL, DISCOVERY_INTERVAL, TimeUnit.MILLISECONDS);
+			}}, 0, DISCOVERY_INTERVAL, TimeUnit.MILLISECONDS);
 		} catch (Exception ex) {
 			throw new InternalException(ex.getMessage(), ex);
 		}
