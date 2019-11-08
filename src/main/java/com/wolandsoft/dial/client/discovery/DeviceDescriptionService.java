@@ -1,23 +1,33 @@
 package com.wolandsoft.dial.client.discovery;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class DeviceDescriptionService implements MSearchServiceListener{
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final long revalidationPeriod;
 	private final ScheduledExecutorService scheduler;
+	private final int connectTimeout;
+	private final int readTimeout;
 	
-	private DeviceDescriptionService(long revalidationPeriod) {
+	private DeviceDescriptionService(long revalidationPeriod, int connectTimeout, int readTimeout) {
 		this.revalidationPeriod = revalidationPeriod;
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
 		this.scheduler = Executors.newScheduledThreadPool(1);
 		
 		scheduler.scheduleAtFixedRate(new Runnable() {
@@ -40,39 +50,34 @@ public class DeviceDescriptionService implements MSearchServiceListener{
 	}
 
 	private void revalidateDevice(DiscoveredDevice device) {
-//        try {
-//            URL url = new URL(getAPIFullPath(mApiPath));
-//            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-//            conn.setConnectTimeout(mConnectTimeout);
-//            conn.setReadTimeout(mReadTimeout);
-//            conn.setRequestMethod(mMethod);
-//            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-//            if (mToken != null) {
-//                conn.setRequestProperty("Authorization", "Bearer " + mToken);
-//            }
-//            conn.connect();
-//            if (mInputObj != null) {
-//                OutputStream os = conn.getOutputStream();
-//                OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-//                osw.write(mGson.toJson(mInputObj));
-//                osw.flush();
-//                osw.close();
-//            }
-//            int errorCode = conn.getResponseCode();
-//            if (errorCode == mExpectedCode) {
-//                Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A");
-//                String data = s.hasNext() ? s.next() : "";
-//                s.close();
-//                if (mExpectedClass != Void.class && data.trim().length() > 0) {
-//                    mOutputObj = new Gson().fromJson(data, mExpectedClass);
-//                }
+		try {
+            URL url = device.getMSearch().getLocation();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(connectTimeout);
+            conn.setReadTimeout(readTimeout);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
+            conn.connect();
+            int retCode = conn.getResponseCode();
+            if (retCode == 200) {
+            	try (Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
+            		String data = s.hasNext() ? s.next().trim() : "";
+            		s.close();
+            		if (data.length() > 0) {
+            			DeviceDescriptionResponce devDesc = DeviceDescriptionParser.parse(data);
+            			if (devDesc != null) {
+            				device.setDeviceDescritption(devDesc);
+            				device.setUpdatedAt(new Date());
+            			}
+            		}
+            	}
 //            } else {
 //                // trying de get error message
 //                Scanner s = new Scanner(conn.getErrorStream()).useDelimiter("\\A");
 //                String data = s.hasNext() ? s.next() : "";
 //                s.close();
 //                mError = parseError(errorCode, data);
-//            }
+            }
 //        } catch (SocketTimeoutException ste) {
 //            mError = new APIError();
 //            mError.setCode(1);
@@ -83,13 +88,9 @@ public class DeviceDescriptionService implements MSearchServiceListener{
 //            mError = new APIError();
 //            mError.setCode(0);
 //            mError.setName("UNKNOWN");
-//        } catch (Exception e) {
-//            LogEx.w(e);
-//            mError = new APIError();
-//            mError.setCode(0);
-//            mError.setName("UNKNOWN");
-//        }
-//        return null;
+        } catch (Exception e) {
+        	// ignore
+        }
 	}
 	
 	@Override
@@ -102,8 +103,6 @@ public class DeviceDescriptionService implements MSearchServiceListener{
 		} else {
 			device.setUpdatedAt(new Date());
 		}
-		//scheduler.
-		
 	}
 	
 }
