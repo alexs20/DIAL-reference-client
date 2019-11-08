@@ -56,7 +56,7 @@ public class MSearchService implements Closeable {
 								String response = new String(packet.getData());
 								MSearchResponce sspdResp = MSearchParser.parse(response);
 								if (sspdResp != null) {
-									scheduler.execute(new Runnable() {
+									scheduler.submit(new Runnable() {
 
 										@Override
 										public void run() {
@@ -92,7 +92,7 @@ public class MSearchService implements Closeable {
 						}
 					}
 				}
-			}, 0, discoveryInterval, TimeUnit.SECONDS);
+			}, 0, discoveryInterval, TimeUnit.MILLISECONDS);
 		} catch (Exception ex) {
 			throw new InternalException(ex.getMessage(), ex);
 		}
@@ -111,7 +111,7 @@ public class MSearchService implements Closeable {
 		private String osName = System.getProperty("os.name");
 		private String osVersion = System.getProperty("os.version");
 		private final List<MSearchServiceListener> listeners = new ArrayList<>();
-		private long discoveryInterval = TimeUnit.SECONDS.toSeconds(10);
+		private long discoveryInterval = TimeUnit.SECONDS.toMillis(10);
 
 		public Builder withProductName(String productName) {
 			this.productName = productName;

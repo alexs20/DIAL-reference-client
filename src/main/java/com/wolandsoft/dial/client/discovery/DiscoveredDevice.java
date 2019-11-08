@@ -24,5 +24,10 @@ public class DiscoveredDevice {
 	protected void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	@Override
+	public String toString() {
+		return "DiscoveredDevice [deviceDescritption=" + deviceDescritption + ", mSearch=" + mSearch + ", updatedAt=" + updatedAt
+				+ "]";
+	}
 
 }
