@@ -21,7 +21,7 @@ public class MSearchService implements Closeable {
 	private final static String MC_ADDRESS = "239.255.255.250";
 	private final static int MC_PORT = 1900;
 	private final static String M_SEARCH_RESOURCE = "m-search.msg";
-	private final static String THREAD_NAME = "DiscoveryServer";
+	private final static String THREAD_NAME = "MSearchListener";
 
 	private final String discoverMessage;
 	private final byte[] recvBuffer = new byte[1400];
@@ -33,10 +33,10 @@ public class MSearchService implements Closeable {
 
 	private MSearchService(String osName, String osVersion, String productName, String productVersion, List<MSearchServiceListener> listeners,
 			long discoveryInterval) {
-		discoverMessage = Resource.read(M_SEARCH_RESOURCE, osName, osVersion, productName, productVersion);
+		this.discoverMessage = Resource.read(M_SEARCH_RESOURCE, osName, osVersion, productName, productVersion);
 		this.listeners = listeners;
 		this.discoveryInterval = discoveryInterval;
-		scheduler = Executors.newScheduledThreadPool(1);
+		this.scheduler = Executors.newScheduledThreadPool(1);
 		run();
 	}
 
