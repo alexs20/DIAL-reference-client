@@ -2,7 +2,7 @@ package com.wolandsoft.dial.client.discovery;
 
 import java.net.URL;
 
-public class SSDPResponce {
+public class MSearchResponce {
 	private URL location = null;
 	private String usn = null;
 	private String wakeupMac = null;
@@ -42,6 +42,6 @@ public class SSDPResponce {
 
 	@Override
 	public String toString() {
-		return "SSDPResponce [location=" + location + ", usn=" + usn + ", wakeupMac=" + wakeupMac + ", wakeupTimeout=" + wakeupTimeout + "]";
+		return "MSearchResponce [location=" + location + ", usn=" + usn + ", wakeupMac=" + wakeupMac + ", wakeupTimeout=" + wakeupTimeout + "]";
 	}
 }

@@ -9,9 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-import com.wolandsoft.dial.client.discovery.DiscoveryService;
-import com.wolandsoft.dial.client.discovery.DiscoveryServiceListener;
-import com.wolandsoft.dial.client.discovery.SSDPResponce;
+import com.wolandsoft.dial.client.discovery.MSearchService;
+import com.wolandsoft.dial.client.discovery.MSearchServiceListener;
+import com.wolandsoft.dial.client.discovery.MSearchResponce;
 
 /**
  * Hello world!
@@ -23,11 +23,11 @@ public class App
     {
 
     	//System.out.println( Resource.read("m-search.msg", System.getProperty("os.name"), System.getProperty("os.version"), "test", "test") );
-    	DiscoveryService ds = new DiscoveryService.Builder()
-    			.withListener(new DiscoveryServiceListener() {
+    	MSearchService ds = new MSearchService.Builder()
+    			.withListener(new MSearchServiceListener() {
 
 					@Override
-					public void onDeviceDiscovery(SSDPResponce message) {
+					public void onDeviceDiscovery(MSearchResponce message) {
 						System.out.println(message);
 						
 					}})

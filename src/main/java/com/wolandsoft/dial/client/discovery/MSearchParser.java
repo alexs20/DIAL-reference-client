@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SSDPParser {
+public class MSearchParser {
 
 	private static final String[] EXPECTED_HEADERS = {"HTTP/1.1 200 OK", "HTTP/1.0 200 OK"};
 	private static final String LOCATION = "LOCATION:";
@@ -17,9 +17,9 @@ public class SSDPParser {
 	private static final Pattern WAKEUP_PARAMS_PATTERN = Pattern.compile(WAKEUP_PARAMS_REGEX);
 	private static final String USN = "USN:";
 
-	public static SSDPResponce parse(String message) {
+	public static MSearchResponce parse(String message) {
 		boolean isHeaderRead = false;
-		SSDPResponce ret = new SSDPResponce();
+		MSearchResponce ret = new MSearchResponce();
 		StringReader sr = new StringReader(message);
 		try (BufferedReader reader = new BufferedReader(sr)) {
 			String line = reader.readLine();
