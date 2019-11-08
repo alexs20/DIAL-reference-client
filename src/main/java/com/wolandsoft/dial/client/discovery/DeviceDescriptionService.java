@@ -72,15 +72,19 @@ public class DeviceDescriptionService implements MSearchServiceListener {
 			conn.connect();
 			int retCode = conn.getResponseCode();
 			if (retCode == 200) {
-				try (Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
-					String data = s.hasNext() ? s.next().trim() : "";
-					s.close();
-					if (data.length() > 0) {
-						DeviceDescriptionResponce devDesc = DeviceDescriptionParser.parse(data);
-						if (devDesc != null) {
-							device.setDeviceDescritption(devDesc);
-							device.setUpdatedAt(new Date());
-							return true;
+				String appUrlStr = conn.getHeaderField("Application-URL");
+				if (appUrlStr != null) {
+					try (Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
+						String data = s.hasNext() ? s.next().trim() : "";
+						s.close();
+						if (data.length() > 0) {
+							DeviceDescriptionResponce devDesc = DeviceDescriptionParser.parse(data);
+							if (devDesc != null) {
+								device.setApplicationURL(new URL(appUrlStr));
+								device.setDeviceDescritption(devDesc);
+								device.setUpdatedAt(new Date());
+								return true;
+							}
 						}
 					}
 				}
@@ -112,6 +116,12 @@ public class DeviceDescriptionService implements MSearchServiceListener {
 			}
 		} else {
 			device.setUpdatedAt(new Date());
+		}
+	}
+
+	public List<DiscoveredDevice> getDiscoveredDevices() {
+		synchronized (devicesMap) {
+			return Collections.unmodifiableList(new ArrayList<>(devicesMap.values()));
 		}
 	}
 
