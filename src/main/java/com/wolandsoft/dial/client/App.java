@@ -9,12 +9,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-import com.wolandsoft.dial.client.discovery.MSearchService;
-import com.wolandsoft.dial.client.discovery.MSearchServiceListener;
-import com.wolandsoft.dial.client.discovery.DeviceDescribeListener;
-import com.wolandsoft.dial.client.discovery.DeviceDescribeService;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchService;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchListener;
+import com.wolandsoft.dial.client.discovery.UPnPDescriptionListener;
+import com.wolandsoft.dial.client.discovery.UPnPDescriptionService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
-import com.wolandsoft.dial.client.discovery.MSearchResponce;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchResponce;
 
 /**
  * Hello world!
@@ -25,8 +25,8 @@ public class App
     public static void main( String[] args ) throws IOException, URISyntaxException, InterruptedException
     {
 
-    	DeviceDescribeService dds = new DeviceDescribeService.Builder()
-    			.withListener(new DeviceDescribeListener() {
+    	UPnPDescriptionService dds = new UPnPDescriptionService.Builder()
+    			.withListener(new UPnPDescriptionListener() {
 
 					@Override
 					public void onDeviceDiscovered(DiscoveredDevice device) {
@@ -42,7 +42,7 @@ public class App
     			.build();
     	
     	//System.out.println( Resource.read("m-search.msg", System.getProperty("os.name"), System.getProperty("os.version"), "test", "test") );
-    	MSearchService ds = new MSearchService.Builder()
+    	SSDPMSearchService ds = new SSDPMSearchService.Builder()
     			.withListener(dds)
     			.build();
     	

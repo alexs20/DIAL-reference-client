@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import com.wolandsoft.dial.client.InternalException;
 import com.wolandsoft.dial.client.Resource;
 
-public class MSearchService implements Closeable {
+public class SSDPMSearchService implements Closeable {
 
 	private final static String MC_ADDRESS = "239.255.255.250";
 	private final static int MC_PORT = 1900;
@@ -28,10 +28,10 @@ public class MSearchService implements Closeable {
 	private final ScheduledExecutorService scheduler;
 	private Thread serverThread;
 	private MulticastSocket serverSocket;
-	private final List<MSearchServiceListener> listeners;
+	private final List<SSDPMSearchListener> listeners;
 	private final long discoveryInterval;
 
-	private MSearchService(String osName, String osVersion, String productName, String productVersion, List<MSearchServiceListener> listeners,
+	private SSDPMSearchService(String osName, String osVersion, String productName, String productVersion, List<SSDPMSearchListener> listeners,
 			long discoveryInterval) {
 		this.discoverMessage = Resource.read(M_SEARCH_RESOURCE, osName, osVersion, productName, productVersion);
 		this.listeners = listeners;
@@ -54,13 +54,13 @@ public class MSearchService implements Closeable {
 							serverSocket.receive(packet);
 							if (packet.getLength() > 0) {
 								String response = new String(packet.getData(), packet.getOffset(), packet.getLength());
-								MSearchResponce sspdResp = MSearchParser.parse(response);
+								SSDPMSearchResponce sspdResp = SSDPMSearchParser.parse(response);
 								if (sspdResp != null) {
 									scheduler.submit(new Runnable() {
 
 										@Override
 										public void run() {
-											for (MSearchServiceListener listener : listeners) {
+											for (SSDPMSearchListener listener : listeners) {
 												listener.onDeviceDiscovery(sspdResp);
 											}
 										}
@@ -110,7 +110,7 @@ public class MSearchService implements Closeable {
 		private String productVersion = "0.0.0";
 		private String osName = System.getProperty("os.name");
 		private String osVersion = System.getProperty("os.version");
-		private final List<MSearchServiceListener> listeners = new ArrayList<>();
+		private final List<SSDPMSearchListener> listeners = new ArrayList<>();
 		private long discoveryInterval = TimeUnit.SECONDS.toMillis(10);
 
 		public Builder withProductName(String productName) {
@@ -133,7 +133,7 @@ public class MSearchService implements Closeable {
 			return this;
 		}
 
-		public Builder withListener(MSearchServiceListener listener) {
+		public Builder withListener(SSDPMSearchListener listener) {
 			this.listeners.add(listener);
 			return this;
 		}
@@ -143,8 +143,8 @@ public class MSearchService implements Closeable {
 			return this;
 		}
 
-		public MSearchService build() {
-			return new MSearchService(osName, osVersion, productName, productVersion, listeners, discoveryInterval);
+		public SSDPMSearchService build() {
+			return new SSDPMSearchService(osName, osVersion, productName, productVersion, listeners, discoveryInterval);
 		}
 	}
 }

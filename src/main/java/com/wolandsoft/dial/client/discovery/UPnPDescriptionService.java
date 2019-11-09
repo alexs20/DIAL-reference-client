@@ -17,16 +17,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DeviceDescribeService implements MSearchServiceListener, Closeable  {
+public class UPnPDescriptionService implements SSDPMSearchListener, Closeable  {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
 	private final long revalidationPeriod;
 	private final long connectTimeout;
 	private final long readTimeout;
-	private final List<DeviceDescribeListener> listeners;
+	private final List<UPnPDescriptionListener> listeners;
 
-	private DeviceDescribeService(long revalidationPeriod, long connectTimeout, long readTimeout, List<DeviceDescribeListener> listeners) {
+	private UPnPDescriptionService(long revalidationPeriod, long connectTimeout, long readTimeout, List<UPnPDescriptionListener> listeners) {
 		this.revalidationPeriod = revalidationPeriod;
 		this.connectTimeout = connectTimeout;
 		this.readTimeout = readTimeout;
@@ -53,7 +53,7 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 
 									@Override
 									public void run() {
-										for (DeviceDescribeListener listener : listeners) {
+										for (UPnPDescriptionListener listener : listeners) {
 											listener.onDeviceRemoved(device);
 										}
 									}
@@ -69,7 +69,7 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 
 	private boolean revalidateDevice(DiscoveredDevice device) {
 		try {
-			URL url = device.getMSearch().getLocation();
+			URL url = device.getMSearchResponce().getLocation();
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout((int) connectTimeout);
 			conn.setReadTimeout((int) readTimeout);
@@ -84,10 +84,10 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 						String data = s.hasNext() ? s.next().trim() : "";
 						s.close();
 						if (data.length() > 0) {
-							DeviceDescribeResponce devDesc = DeviceDescribeParser.parse(data);
+							UPnPDescriptionResponce devDesc = UPnPDescriptionParser.parse(data);
 							if (devDesc != null) {
 								device.setApplicationURL(new URL(appUrlStr));
-								device.setDeviceDescritption(devDesc);
+								device.setDescriptionResponce(devDesc);
 								device.setUpdatedAt(new Date());
 								return true;
 							}
@@ -102,19 +102,19 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 	}
 
 	@Override
-	public void onDeviceDiscovery(MSearchResponce message) {
+	public void onDeviceDiscovery(SSDPMSearchResponce message) {
 		DiscoveredDevice device = devicesMap.get(message.getUsn());
 		if (device == null) {
 			device = new DiscoveredDevice();
-			device.setMSearch(message);
+			device.setMSearchResponce(message);
 			if (revalidateDevice(device)) {
-				devicesMap.put(device.getMSearch().getUsn(), device);
+				devicesMap.put(device.getMSearchResponce().getUsn(), device);
 				final DiscoveredDevice addedDevice = device;
 				scheduler.submit(new Runnable() {
 
 					@Override
 					public void run() {
-						for (DeviceDescribeListener listener : listeners) {
+						for (UPnPDescriptionListener listener : listeners) {
 							listener.onDeviceDiscovered(addedDevice);
 						}
 					}
@@ -140,7 +140,7 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 		private long revalidationPeriod = TimeUnit.SECONDS.toMillis(25);
 		private long connectTimeout = TimeUnit.SECONDS.toMillis(2);
 		private long readTimeout = TimeUnit.SECONDS.toMillis(2);
-		private List<DeviceDescribeListener> listeners = new ArrayList<>();
+		private List<UPnPDescriptionListener> listeners = new ArrayList<>();
 
 		public Builder withRevalidationPeriod(long revalidationPeriod) {
 			this.revalidationPeriod = revalidationPeriod;
@@ -157,13 +157,13 @@ public class DeviceDescribeService implements MSearchServiceListener, Closeable 
 			return this;
 		}
 
-		public Builder withListener(DeviceDescribeListener listener) {
+		public Builder withListener(UPnPDescriptionListener listener) {
 			this.listeners.add(listener);
 			return this;
 		}
 
-		public DeviceDescribeService build() {
-			return new DeviceDescribeService(revalidationPeriod, connectTimeout, readTimeout, listeners);
+		public UPnPDescriptionService build() {
+			return new UPnPDescriptionService(revalidationPeriod, connectTimeout, readTimeout, listeners);
 		}
 	}
 }

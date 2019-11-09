@@ -10,8 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.wolandsoft.dial.client.discovery.MSearchParser;
-import com.wolandsoft.dial.client.discovery.MSearchResponce;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchParser;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchResponce;
 
 public class MSearchParserTest
 {
@@ -39,7 +39,7 @@ public class MSearchParserTest
         		"USN: device UUID\n" + 
         		"ST: urn:dial-multiscreen-org:service:dial:1\n" + 
         		"WAKEUP: MAC=10:dd:b1:c9:00:e4;Timeout=10\n";
-        MSearchResponce resp = MSearchParser.parse(message);
+        SSDPMSearchResponce resp = SSDPMSearchParser.parse(message);
         assertNotNull(resp);
         assertEquals(resp.getLocation(), new URL("http://192.168.1.1:52235/dd.xml"));
         assertEquals(resp.getUsn(), "device UUID");

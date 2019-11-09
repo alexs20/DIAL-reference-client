@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.Date;
 
 public class DiscoveredDevice {
-	private DeviceDescribeResponce deviceDescritption = null;
-	private MSearchResponce mSearch = null;
+	private UPnPDescriptionResponce descriptionResponce = null;
+	private SSDPMSearchResponce mSearchResponce = null;
 	private URL applicationURL = null;
 	private Date updatedAt = null;
 
@@ -17,20 +17,20 @@ public class DiscoveredDevice {
 		this.applicationURL = applicationURL;
 	}
 
-	public DeviceDescribeResponce getDeviceDescritption() {
-		return deviceDescritption;
+	public UPnPDescriptionResponce getDescriptionResponce() {
+		return descriptionResponce;
 	}
 
-	protected void setDeviceDescritption(DeviceDescribeResponce deviceDescritption) {
-		this.deviceDescritption = deviceDescritption;
+	protected void setDescriptionResponce(UPnPDescriptionResponce descriptionResponce) {
+		this.descriptionResponce = descriptionResponce;
 	}
 
-	public MSearchResponce getMSearch() {
-		return mSearch;
+	public SSDPMSearchResponce getMSearchResponce() {
+		return mSearchResponce;
 	}
 
-	protected void setMSearch(MSearchResponce mSearch) {
-		this.mSearch = mSearch;
+	protected void setMSearchResponce(SSDPMSearchResponce mSearchResponce) {
+		this.mSearchResponce = mSearchResponce;
 	}
 
 	public Date getUpdatedAt() {
@@ -43,8 +43,8 @@ public class DiscoveredDevice {
 
 	@Override
 	public String toString() {
-		return "DiscoveredDevice [deviceDescritption=" + deviceDescritption + ", mSearch=" + mSearch + ", applicationURL="
-				+ applicationURL + ", updatedAt=" + updatedAt + "]";
+		return "DiscoveredDevice [descriptionResponce=" + descriptionResponce + ", mSearchResponce=" + mSearchResponce + ", applicationURL=" + applicationURL
+				+ ", updatedAt=" + updatedAt + "]";
 	}
 
 }
