@@ -19,17 +19,21 @@ public class DeviceDescriptionService implements MSearchServiceListener {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
+	private final long revalidationPeriod;
 	private final long connectTimeout;
 	private final long readTimeout;
 	private final List<DeviceDescriptionListener> listeners;
 
-	private DeviceDescriptionService(long revalidationPeriod, long connectTimeout, long readTimeout,
-			List<DeviceDescriptionListener> listeners) {
+	private DeviceDescriptionService(long revalidationPeriod, long connectTimeout, long readTimeout, List<DeviceDescriptionListener> listeners) {
+		this.revalidationPeriod = revalidationPeriod;
 		this.connectTimeout = connectTimeout;
 		this.readTimeout = readTimeout;
 		this.listeners = listeners;
 		this.scheduler = Executors.newScheduledThreadPool(1);
+		run();
+	}
 
+	private void run() {
 		scheduler.scheduleAtFixedRate(new Runnable() {
 
 			@Override

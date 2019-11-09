@@ -46,8 +46,10 @@ public class App
     			.withListener(dds)
     			.build();
     	
-    	Thread.sleep(60000);
-    	ds.close();
-    	Thread.sleep(13000);
+    	synchronized(Thread.currentThread()) {
+    		Thread.currentThread().wait();
+    	}
+    	//ds.close();
+    	//Thread.sleep(13000);
     }
 }
