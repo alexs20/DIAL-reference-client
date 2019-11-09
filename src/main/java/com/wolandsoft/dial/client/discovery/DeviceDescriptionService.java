@@ -1,5 +1,7 @@
 package com.wolandsoft.dial.client.discovery;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DeviceDescriptionService implements MSearchServiceListener {
+public class DeviceDescriptionService implements MSearchServiceListener, Closeable  {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
@@ -129,8 +131,12 @@ public class DeviceDescriptionService implements MSearchServiceListener {
 		}
 	}
 
-	public static class Builder {
+	@Override
+	public void close() throws IOException {
+		scheduler.shutdown();
+	}
 
+	public static class Builder {
 		private long revalidationPeriod = TimeUnit.SECONDS.toMillis(25);
 		private long connectTimeout = TimeUnit.SECONDS.toMillis(2);
 		private long readTimeout = TimeUnit.SECONDS.toMillis(2);
