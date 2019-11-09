@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.wolandsoft.dial.client.discovery.SSDPMSearchParser;
 import com.wolandsoft.dial.client.discovery.SSDPMSearchResponce;
 
-public class MSearchParserTest
+public class SSDPMSearchParserTest
 {
 	@Before
 	public void onBefore() throws Exception {

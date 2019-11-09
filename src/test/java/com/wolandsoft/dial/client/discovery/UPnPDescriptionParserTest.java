@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DeviceDescriptionParserTest {
+public class UPnPDescriptionParserTest {
 	@Before
 	public void onBefore() throws Exception {
 
