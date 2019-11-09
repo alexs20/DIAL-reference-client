@@ -14,13 +14,13 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-public class DeviceDescriptionParser {
+public class DeviceDescribeParser {
 
-	public static DeviceDescriptionResponce parse(String message) {
+	public static DeviceDescribeResponce parse(String message) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		InputSource inputSource = new InputSource(new StringReader(message));
-		DeviceDescriptionResponce ret = new DeviceDescriptionResponce();
+		DeviceDescribeResponce ret = new DeviceDescribeResponce();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(inputSource);

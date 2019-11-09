@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.Date;
 
 public class DiscoveredDevice {
-	private DeviceDescriptionResponce deviceDescritption = null;
+	private DeviceDescribeResponce deviceDescritption = null;
 	private MSearchResponce mSearch = null;
 	private URL applicationURL = null;
 	private Date updatedAt = null;
@@ -17,11 +17,11 @@ public class DiscoveredDevice {
 		this.applicationURL = applicationURL;
 	}
 
-	public DeviceDescriptionResponce getDeviceDescritption() {
+	public DeviceDescribeResponce getDeviceDescritption() {
 		return deviceDescritption;
 	}
 
-	protected void setDeviceDescritption(DeviceDescriptionResponce deviceDescritption) {
+	protected void setDeviceDescritption(DeviceDescribeResponce deviceDescritption) {
 		this.deviceDescritption = deviceDescritption;
 	}
 

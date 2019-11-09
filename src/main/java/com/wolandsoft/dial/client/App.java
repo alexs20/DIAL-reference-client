@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 import com.wolandsoft.dial.client.discovery.MSearchService;
 import com.wolandsoft.dial.client.discovery.MSearchServiceListener;
-import com.wolandsoft.dial.client.discovery.DeviceDescriptionListener;
-import com.wolandsoft.dial.client.discovery.DeviceDescriptionService;
+import com.wolandsoft.dial.client.discovery.DeviceDescribeListener;
+import com.wolandsoft.dial.client.discovery.DeviceDescribeService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
 import com.wolandsoft.dial.client.discovery.MSearchResponce;
 
@@ -25,8 +25,8 @@ public class App
     public static void main( String[] args ) throws IOException, URISyntaxException, InterruptedException
     {
 
-    	DeviceDescriptionService dds = new DeviceDescriptionService.Builder()
-    			.withListener(new DeviceDescriptionListener() {
+    	DeviceDescribeService dds = new DeviceDescribeService.Builder()
+    			.withListener(new DeviceDescribeListener() {
 
 					@Override
 					public void onDeviceDiscovered(DiscoveredDevice device) {

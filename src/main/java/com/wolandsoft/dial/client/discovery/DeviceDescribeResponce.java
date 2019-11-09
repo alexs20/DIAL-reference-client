@@ -1,6 +1,6 @@
 package com.wolandsoft.dial.client.discovery;
 
-public class DeviceDescriptionResponce {
+public class DeviceDescribeResponce {
 	private String friendlyName = null;
 	private String manufacturer = null;
 
@@ -22,7 +22,7 @@ public class DeviceDescriptionResponce {
 
 	@Override
 	public String toString() {
-		return "DeviceDescriptionResponce [friendlyName=" + friendlyName + ", manufacturer=" + manufacturer + "]";
+		return "DeviceDescribeResponce [friendlyName=" + friendlyName + ", manufacturer=" + manufacturer + "]";
 	}
 
 }

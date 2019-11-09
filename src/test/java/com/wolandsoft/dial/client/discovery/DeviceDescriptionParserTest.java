@@ -23,7 +23,7 @@ public class DeviceDescriptionParserTest {
 	@Test
 	public void testApp() throws MalformedURLException {
 		String message = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?><root xmlns=\"urn:schemas-upnp-org:device-1-0\"><specVersion><major>1</major><minor>0</minor></specVersion><device><deviceType>urn:dial-multiscreen-org:device:dial:1</deviceType><friendlyName>Fire TV 1</friendlyName><manufacturer>Amazon</manufacturer><modelName>AFTMM</modelName><UDN>uuid:4248037a-d4b5-6c7b-0000-000062dc019d</UDN><serviceList><service><serviceType>urn:dial-multiscreen-org:service:dial:1</serviceType><serviceId>urn:dial-multiscreen-org:serviceId:dial</serviceId><SCPDURL>/upnp/dev/4248037a-d4b5-6c7b-0000-000062dc019d/svc/dial-multiscreen-org/dial/desc</SCPDURL><controlURL>/upnp/dev/4248037a-d4b5-6c7b-0000-000062dc019d/svc/dial-multiscreen-org/dial/action</controlURL><eventSubURL>/upnp/dev/4248037a-d4b5-6c7b-0000-000062dc019d/svc/dial-multiscreen-org/dial/event</eventSubURL></service></serviceList></device></root>";
-		DeviceDescriptionResponce resp = DeviceDescriptionParser.parse(message);
+		DeviceDescribeResponce resp = DeviceDescribeParser.parse(message);
 		assertNotNull(resp);
 		assertEquals(resp.getFriendlyName(), "Fire TV 1");
 		assertEquals(resp.getManufacturer(), "Amazon");

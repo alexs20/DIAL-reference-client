@@ -17,16 +17,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DeviceDescriptionService implements MSearchServiceListener, Closeable  {
+public class DeviceDescribeService implements MSearchServiceListener, Closeable  {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
 	private final long revalidationPeriod;
 	private final long connectTimeout;
 	private final long readTimeout;
-	private final List<DeviceDescriptionListener> listeners;
+	private final List<DeviceDescribeListener> listeners;
 
-	private DeviceDescriptionService(long revalidationPeriod, long connectTimeout, long readTimeout, List<DeviceDescriptionListener> listeners) {
+	private DeviceDescribeService(long revalidationPeriod, long connectTimeout, long readTimeout, List<DeviceDescribeListener> listeners) {
 		this.revalidationPeriod = revalidationPeriod;
 		this.connectTimeout = connectTimeout;
 		this.readTimeout = readTimeout;
@@ -53,7 +53,7 @@ public class DeviceDescriptionService implements MSearchServiceListener, Closeab
 
 									@Override
 									public void run() {
-										for (DeviceDescriptionListener listener : listeners) {
+										for (DeviceDescribeListener listener : listeners) {
 											listener.onDeviceRemoved(device);
 										}
 									}
@@ -84,7 +84,7 @@ public class DeviceDescriptionService implements MSearchServiceListener, Closeab
 						String data = s.hasNext() ? s.next().trim() : "";
 						s.close();
 						if (data.length() > 0) {
-							DeviceDescriptionResponce devDesc = DeviceDescriptionParser.parse(data);
+							DeviceDescribeResponce devDesc = DeviceDescribeParser.parse(data);
 							if (devDesc != null) {
 								device.setApplicationURL(new URL(appUrlStr));
 								device.setDeviceDescritption(devDesc);
@@ -114,7 +114,7 @@ public class DeviceDescriptionService implements MSearchServiceListener, Closeab
 
 					@Override
 					public void run() {
-						for (DeviceDescriptionListener listener : listeners) {
+						for (DeviceDescribeListener listener : listeners) {
 							listener.onDeviceDiscovered(addedDevice);
 						}
 					}
@@ -140,7 +140,7 @@ public class DeviceDescriptionService implements MSearchServiceListener, Closeab
 		private long revalidationPeriod = TimeUnit.SECONDS.toMillis(25);
 		private long connectTimeout = TimeUnit.SECONDS.toMillis(2);
 		private long readTimeout = TimeUnit.SECONDS.toMillis(2);
-		private List<DeviceDescriptionListener> listeners = new ArrayList<>();
+		private List<DeviceDescribeListener> listeners = new ArrayList<>();
 
 		public Builder withRevalidationPeriod(long revalidationPeriod) {
 			this.revalidationPeriod = revalidationPeriod;
@@ -157,13 +157,13 @@ public class DeviceDescriptionService implements MSearchServiceListener, Closeab
 			return this;
 		}
 
-		public Builder withListener(DeviceDescriptionListener listener) {
+		public Builder withListener(DeviceDescribeListener listener) {
 			this.listeners.add(listener);
 			return this;
 		}
 
-		public DeviceDescriptionService build() {
-			return new DeviceDescriptionService(revalidationPeriod, connectTimeout, readTimeout, listeners);
+		public DeviceDescribeService build() {
+			return new DeviceDescribeService(revalidationPeriod, connectTimeout, readTimeout, listeners);
 		}
 	}
 }

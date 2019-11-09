@@ -1,6 +1,6 @@
 package com.wolandsoft.dial.client.discovery;
 
-public interface DeviceDescriptionListener {
+public interface DeviceDescribeListener {
 
 	void onDeviceDiscovered(DiscoveredDevice device);
 	
