@@ -53,7 +53,7 @@ public class MSearchService implements Closeable {
 						try {
 							serverSocket.receive(packet);
 							if (packet.getLength() > 0) {
-								String response = new String(packet.getData());
+								String response = new String(packet.getData(), packet.getOffset(), packet.getLength());
 								MSearchResponce sspdResp = MSearchParser.parse(response);
 								if (sspdResp != null) {
 									scheduler.submit(new Runnable() {
