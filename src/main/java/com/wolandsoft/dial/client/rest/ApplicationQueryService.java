@@ -24,7 +24,7 @@ public class ApplicationQueryService implements Closeable {
 	}
 
 	public Future<ApplicationQueryResponce> query(URL applicationURL, String applicationName) {
-		return query(applicationURL, applicationName);
+		return query(applicationURL, applicationName, null);
 	}
 	public Future<ApplicationQueryResponce> query(URL applicationURL, String applicationName, RestServiceCallback<ApplicationQueryResponce> callback) {
 		return executor.submit(new Callable<ApplicationQueryResponce>() {
@@ -43,6 +43,7 @@ public class ApplicationQueryService implements Closeable {
 					if (retCode == 200) {
 						try (Scanner s = new Scanner(conn.getInputStream()).useDelimiter("\\A")) {
 							String data = s.hasNext() ? s.next().trim() : "";
+							System.out.println(data);
 							s.close();
 							if (data.length() > 0) {
 								ApplicationQueryResponce devDesc = ApplicationQueryParser.parse(data);
@@ -55,6 +56,9 @@ public class ApplicationQueryService implements Closeable {
 					}
 				} catch (Exception e) {
 					// ignore
+				}
+				if (callback != null) {
+					callback.onResult(null);
 				}
 				return null;
 			}

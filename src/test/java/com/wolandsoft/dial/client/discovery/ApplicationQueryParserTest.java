@@ -29,14 +29,16 @@ public class ApplicationQueryParserTest {
 				"<service xmlns=\"urn:dial-multiscreen-org:schemas:dial\" dialVer=\"1.7\">\n" + 
 				"<name>YouTube</name>\n" + 
 				"<options allowStop=\"true\"/>\n" + 
-				"<state>stopped</state>\n" + 
+				"<state>running</state>\n" + 
+				"<link rel=\"run\" href=\"run\"/>\n" + 
 				"</service>";
 		ApplicationQueryResponce resp = ApplicationQueryParser.parse(message);
 		assertNotNull(resp);
 		assertEquals(resp.getDialVer(), "1.7");
 		assertEquals(resp.getName(), "YouTube");
 		assertEquals(resp.getAllowStop(), Boolean.valueOf(true));
-		assertEquals(resp.getState(), "stopped");
+		assertEquals(resp.getState(), "running");
+		assertEquals(resp.getLinkHref(), "run");
 
 	}
 }

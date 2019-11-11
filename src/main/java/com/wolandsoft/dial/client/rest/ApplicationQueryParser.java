@@ -32,6 +32,9 @@ public class ApplicationQueryParser {
 					(Boolean) xpath.evaluate("/*[local-name()='service']/*[local-name()='options']/@allowStop", xml, XPathConstants.BOOLEAN));
 			ret.setState(
 					(String) xpath.evaluate("/*[local-name()='service']/*[local-name()='state']", xml, XPathConstants.STRING));
+			ret.setLinkHref(
+					(String) xpath.evaluate("/*[local-name()='service']/*[local-name()='link']/@href", xml, XPathConstants.STRING));
+
 			return ret;
 		} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e) {
 			return null;
