@@ -7,6 +7,7 @@ public class ApplicationQueryResponce {
 	private Boolean allowStop = null;
 	private String state = null;
 	private String linkHref = null;
+	private String additionalData = null;
 
 	public String getDialVer() {
 		return dialVer;
@@ -48,10 +49,18 @@ public class ApplicationQueryResponce {
 		this.linkHref = linkHref;
 	}
 
+	public String getAdditionalData() {
+		return additionalData;
+	}
+
+	protected void setAdditionalData(String additionalData) {
+		this.additionalData = additionalData;
+	}
+
 	@Override
 	public String toString() {
-		return "ApplicationQueryResponce [dialVer=" + dialVer + ", name=" + name + ", allowStop=" + allowStop + ", state=" + state + ", linkHref=" + linkHref
-				+ "]";
+		return "ApplicationQueryResponce [dialVer=" + dialVer + ", name=" + name + ", allowStop=" + allowStop + ", state=" + state
+				+ ", linkHref=" + linkHref + ", additionalData=" + additionalData + "]";
 	}
 
 }
