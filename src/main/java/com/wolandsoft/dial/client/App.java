@@ -18,6 +18,7 @@ import com.wolandsoft.dial.client.discovery.UPnPDescriptionService;
 import com.wolandsoft.dial.client.rest.ApplicationLaunchService;
 import com.wolandsoft.dial.client.rest.ApplicationQueryResponce;
 import com.wolandsoft.dial.client.rest.ApplicationQueryService;
+import com.wolandsoft.dial.client.discovery.DeviceWOLService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
 import com.wolandsoft.dial.client.discovery.SSDPMSearchResponce;
 
@@ -29,6 +30,7 @@ public class App
 {
     public static void main( String[] args ) throws IOException, URISyntaxException, InterruptedException
     {
+    	new DeviceWOLService();
 
     	ApplicationQueryService appQuery = new ApplicationQueryService.Builder().build();
     	ApplicationLaunchService appLaunch = new ApplicationLaunchService.Builder().build();

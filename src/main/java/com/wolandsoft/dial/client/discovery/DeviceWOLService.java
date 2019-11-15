@@ -3,11 +3,36 @@ package com.wolandsoft.dial.client.discovery;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class DeviceWOLService {
     public static final int PORT = 9;    
     
-    public static void main(String[] args) {
+    public DeviceWOLService() {
+    	try {
+    	Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+    	while (interfaces.hasMoreElements()) 
+    	{
+    	    NetworkInterface networkInterface = interfaces.nextElement();
+    	    if (networkInterface.isLoopback())
+    	        continue;    // Do not want to use the loopback interface.
+    	    for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) 
+    	    {
+    	        InetAddress broadcast = interfaceAddress.getBroadcast();
+    	        if (broadcast == null)
+    	            continue;
+
+    	        // Do something with the address.
+    	    }
+    	}
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+	}
+
+	public static void main(String[] args) {
         
         if (args.length != 2) {
             System.out.println("Usage: java WakeOnLan <broadcast-ip> <mac-address>");
