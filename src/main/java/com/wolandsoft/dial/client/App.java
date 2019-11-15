@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,6 +15,7 @@ import com.wolandsoft.dial.client.discovery.SSDPMSearchService;
 import com.wolandsoft.dial.client.discovery.SSDPMSearchListener;
 import com.wolandsoft.dial.client.discovery.UPnPDescriptionListener;
 import com.wolandsoft.dial.client.discovery.UPnPDescriptionService;
+import com.wolandsoft.dial.client.rest.ApplicationLaunchService;
 import com.wolandsoft.dial.client.rest.ApplicationQueryResponce;
 import com.wolandsoft.dial.client.rest.ApplicationQueryService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
@@ -29,7 +31,7 @@ public class App
     {
 
     	ApplicationQueryService appQuery = new ApplicationQueryService.Builder().build();
-    	
+    	ApplicationLaunchService appLaunch = new ApplicationLaunchService.Builder().build();
     	
     	UPnPDescriptionService dds = new UPnPDescriptionService.Builder()
     			.withListener(new UPnPDescriptionListener() {
@@ -40,6 +42,11 @@ public class App
 						try {
 							ApplicationQueryResponce aqr = appQuery.query(device.getApplicationURL(), "YouTube").get();
 							System.out.println("appQuery " + aqr);
+							if (aqr != null && device.getDescriptionResponce().getFriendlyName().equals("DIAL server sample")) {
+								URL appInstance = appLaunch.launch(device.getApplicationURL(), "YouTube", "Java test", "test-payload").get();
+								System.out.println("appInstance " + appInstance);	
+							}
+							
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						} catch (ExecutionException e) {
