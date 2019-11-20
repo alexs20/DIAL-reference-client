@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.wolandsoft.dial.client.InternalException;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchService.Builder;
 
 public class DeviceWOLService implements SSDPMSearchListener {
 	private static final int PORT = 9;
@@ -25,7 +26,7 @@ public class DeviceWOLService implements SSDPMSearchListener {
 
 	private final ScheduledExecutorService scheduler;
 
-	public DeviceWOLService() {
+	private DeviceWOLService() {
 		this.scheduler = Executors.newScheduledThreadPool(1);
 	}
 
@@ -76,7 +77,7 @@ public class DeviceWOLService implements SSDPMSearchListener {
 					}
 				} else {
 					Long startTime = usns.get(usn);
-					if (startTime.longValue() + TimeUnit.SECONDS.toMillis(timeout) < System.currentTimeMillis()) {
+					if (startTime.longValue() + TimeUnit.SECONDS.toMillis(timeout) * 2 < System.currentTimeMillis()) {
 						usns.remove(usn);
 						if (callback != null) {
 							scheduler.submit(new Runnable() {
@@ -144,5 +145,12 @@ public class DeviceWOLService implements SSDPMSearchListener {
 	public void onDeviceDiscovery(SSDPMSearchResponce message) {
 		usns.remove(message.getUsn());
 
+	}
+	
+	public static class Builder {
+
+		public DeviceWOLService build() {
+			return new DeviceWOLService();
+		}
 	}
 }
