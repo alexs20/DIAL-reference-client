@@ -21,12 +21,10 @@ public class SSDPMSearchService implements Closeable {
 	private final static String MC_ADDRESS = "239.255.255.250";
 	private final static int MC_PORT = 1900;
 	private final static String M_SEARCH_RESOURCE = "m-search.msg";
-	private final static String THREAD_NAME = "MSearchListener";
 
 	private final String discoverMessage;
 	private final byte[] recvBuffer = new byte[1400];
 	private final ScheduledExecutorService scheduler;
-	private Thread serverThread;
 	private MulticastSocket serverSocket;
 	private final List<SSDPMSearchListener> listeners;
 	private final long discoveryInterval;
@@ -36,7 +34,7 @@ public class SSDPMSearchService implements Closeable {
 		this.discoverMessage = Resource.read(M_SEARCH_RESOURCE, osName, osVersion, productName, productVersion);
 		this.listeners = listeners;
 		this.discoveryInterval = discoveryInterval;
-		this.scheduler = Executors.newScheduledThreadPool(1);
+		this.scheduler = Executors.newScheduledThreadPool(2);
 		run();
 	}
 
@@ -45,7 +43,7 @@ public class SSDPMSearchService implements Closeable {
 			InetAddress multicastAddress = InetAddress.getByName(MC_ADDRESS);
 			serverSocket = new MulticastSocket(0);
 			DatagramPacket packet = new DatagramPacket(recvBuffer, recvBuffer.length);
-			serverThread = new Thread(new Runnable() {
+			scheduler.submit(new Runnable() {
 
 				@Override
 				public void run() {
@@ -56,15 +54,14 @@ public class SSDPMSearchService implements Closeable {
 								String response = new String(packet.getData(), packet.getOffset(), packet.getLength());
 								SSDPMSearchResponce sspdResp = SSDPMSearchParser.parse(response);
 								if (sspdResp != null) {
-									scheduler.submit(new Runnable() {
-
-										@Override
-										public void run() {
-											for (SSDPMSearchListener listener : listeners) {
+									for (SSDPMSearchListener listener : listeners) {
+										scheduler.submit(new Runnable() {
+											@Override
+											public void run() {
 												listener.onDeviceDiscovery(sspdResp);
 											}
-										}
-									});
+										});
+									}
 								}
 							}
 						} catch (SocketException ex) {
@@ -74,8 +71,7 @@ public class SSDPMSearchService implements Closeable {
 						}
 					}
 				}
-			}, THREAD_NAME);
-			serverThread.start();
+			});
 			scheduler.scheduleAtFixedRate(new Runnable() {
 
 				@Override

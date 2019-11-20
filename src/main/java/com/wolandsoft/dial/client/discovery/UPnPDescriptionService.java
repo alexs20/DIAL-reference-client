@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class UPnPDescriptionService implements SSDPMSearchListener, Closeable  {
+public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
@@ -49,15 +49,14 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable  {
 						if ((device.getUpdatedAt().getTime() + revalidationPeriod) < System.currentTimeMillis()) {
 							if (!revalidateDevice(device)) {
 								i.remove();
-								scheduler.submit(new Runnable() {
-
-									@Override
-									public void run() {
-										for (UPnPDescriptionListener listener : listeners) {
+								for (UPnPDescriptionListener listener : listeners) {
+									scheduler.submit(new Runnable() {
+										@Override
+										public void run() {
 											listener.onDeviceRemoved(device);
 										}
-									}
-								});
+									});
+								}
 							}
 						}
 					}
@@ -109,16 +108,15 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable  {
 			device.setMSearchResponce(message);
 			if (revalidateDevice(device)) {
 				devicesMap.put(device.getMSearchResponce().getUsn(), device);
-				final DiscoveredDevice addedDevice = device;
-				scheduler.submit(new Runnable() {
-
-					@Override
-					public void run() {
-						for (UPnPDescriptionListener listener : listeners) {
+				DiscoveredDevice addedDevice = device;
+				for (UPnPDescriptionListener listener : listeners) {
+					scheduler.submit(new Runnable() {
+						@Override
+						public void run() {
 							listener.onDeviceDiscovered(addedDevice);
 						}
-					}
-				});
+					});
+				}
 			}
 		} else {
 			device.setUpdatedAt(new Date());

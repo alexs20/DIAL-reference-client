@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -52,7 +53,19 @@ public class ApplicationLaunchService implements Closeable {
 					if (retCode == 200 || retCode == 201) {
 						String appInstanceUrl = conn.getHeaderField("LOCATION");
 						if (appInstanceUrl != null) { 
-							return new URL(appInstanceUrl);
+							URL retUrl = null;
+							try {
+								retUrl = new URL(appInstanceUrl);
+							} catch (MalformedURLException mue) {
+								retUrl = new URL(applicationURL.getProtocol(),
+										applicationURL.getHost(),
+										applicationURL.getPort(),
+										appInstanceUrl);
+							}
+							if (callback != null) {
+								callback.onResult(retUrl);
+							}
+							return retUrl;
 						}
 					} else {
 						System.out.println(conn.getResponseMessage());

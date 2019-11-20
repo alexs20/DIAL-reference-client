@@ -44,10 +44,10 @@ public class App
 						try {
 							ApplicationQueryResponce aqr = appQuery.query(device.getApplicationURL(), "YouTube").get();
 							System.out.println("appQuery " + aqr);
-							if (aqr != null && device.getDescriptionResponce().getFriendlyName().equals("DIAL server sample")) {
+							//if (aqr != null && device.getDescriptionResponce().getFriendlyName().equals("DIAL server sample")) {
 								URL appInstance = appLaunch.launch(device.getApplicationURL(), "YouTube", "Java test", "test-payload").get();
 								System.out.println("appInstance " + appInstance);	
-							}
+							//}
 							
 						} catch (InterruptedException e) {
 							e.printStackTrace();
