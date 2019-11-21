@@ -25,7 +25,7 @@ public class ApplicationLaunchCallable implements Callable<URL> {
 
 	public URL call() throws Exception {
 		URL url = new URL(config.applicationURL.toExternalForm() + config.applicationName
-				+ (config.friendlyName == null ? "" : "?friendlyName='" + config.friendlyName + "'"));
+				+ (config.friendlyName == null ? "" : "?friendlyName=" + config.friendlyName));
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setConnectTimeout((int) config.connectTimeout);
 		conn.setReadTimeout((int) config.readTimeout);
