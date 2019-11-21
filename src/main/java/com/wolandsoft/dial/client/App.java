@@ -1,27 +1,14 @@
 package com.wolandsoft.dial.client;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
-import com.wolandsoft.dial.client.discovery.SSDPMSearchService;
-import com.wolandsoft.dial.client.discovery.SSDPMSearchListener;
-import com.wolandsoft.dial.client.discovery.UPnPDescriptionListener;
-import com.wolandsoft.dial.client.discovery.UPnPDescriptionService;
-import com.wolandsoft.dial.client.rest.ApplicationLaunchService;
-import com.wolandsoft.dial.client.rest.ApplicationQueryResponce;
-import com.wolandsoft.dial.client.rest.ApplicationQueryService;
 import com.wolandsoft.dial.client.discovery.DeviceWOLCallback;
 import com.wolandsoft.dial.client.discovery.DeviceWOLService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
-import com.wolandsoft.dial.client.discovery.SSDPMSearchResponce;
+import com.wolandsoft.dial.client.discovery.SSDPMSearchService;
+import com.wolandsoft.dial.client.discovery.UPnPDescriptionListener;
+import com.wolandsoft.dial.client.discovery.UPnPDescriptionService;
 
 /**
  * Hello world!
