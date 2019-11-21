@@ -32,8 +32,7 @@ public class App
     public static void main( String[] args ) throws IOException, URISyntaxException, InterruptedException
     {
 
-    	ApplicationQueryService appQuery = new ApplicationQueryService.Builder().build();
-    	ApplicationLaunchService appLaunch = new ApplicationLaunchService.Builder().build();
+
     	
     	UPnPDescriptionService dds = new UPnPDescriptionService.Builder()
     			.withListener(new UPnPDescriptionListener() {
