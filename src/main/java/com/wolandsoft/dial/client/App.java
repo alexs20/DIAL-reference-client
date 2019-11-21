@@ -3,9 +3,7 @@ package com.wolandsoft.dial.client;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
-import com.wolandsoft.dial.client.discovery.DeviceWOLCallback;
 import com.wolandsoft.dial.client.discovery.DeviceWOLService;
 import com.wolandsoft.dial.client.discovery.DiscoveredDevice;
 import com.wolandsoft.dial.client.discovery.SSDPMSearchService;
