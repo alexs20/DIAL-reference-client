@@ -1,4 +1,4 @@
-package com.wolandsoft.dial.client;
+package com.wolandsoft.dial.client.common;
 
 public class InternalException extends RuntimeException {
 

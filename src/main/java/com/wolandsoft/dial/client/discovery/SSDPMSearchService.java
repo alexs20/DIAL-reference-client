@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.wolandsoft.dial.client.InternalException;
-import com.wolandsoft.dial.client.Resource;
+import com.wolandsoft.dial.client.common.InternalException;
+import com.wolandsoft.dial.client.common.Resource;
 
 public class SSDPMSearchService implements Closeable {
 

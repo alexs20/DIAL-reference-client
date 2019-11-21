@@ -1,4 +1,4 @@
-package com.wolandsoft.dial.client;
+package com.wolandsoft.dial.client.common;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
