@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.wolandsoft.dial.client.InternalException;
+import com.wolandsoft.dial.client.common.InternalException;
 
 public class DeviceWOLService implements SSDPMSearchListener {
 	private static final int PORT = 9;

@@ -7,7 +7,7 @@ public class RestException extends Exception {
 	private int responseCode;
 
 	public RestException(int responseCode, String responseMessage) {
-		super();
+		super("Rest invocation error: " + responseCode + ", " + responseMessage);
 		this.responseCode = responseCode;
 		this.responseMessage = responseMessage;
 	}

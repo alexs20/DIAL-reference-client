@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.wolandsoft.dial.client.InternalException;
+import com.wolandsoft.dial.client.common.InternalException;
 
 public class SystemSleepCallable implements Callable<Void> {
 	private final Builder config;

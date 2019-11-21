@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.wolandsoft.dial.client.InternalException;
+import com.wolandsoft.dial.client.common.InternalException;
 
 public class ApplicationQueryCallable implements Callable<ApplicationQueryResponce> {
 	private final Builder config;

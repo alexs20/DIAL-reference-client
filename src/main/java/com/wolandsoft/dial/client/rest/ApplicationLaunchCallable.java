@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.wolandsoft.dial.client.InternalException;
+import com.wolandsoft.dial.client.common.InternalException;
 
 public class ApplicationLaunchCallable implements Callable<URL> {
 	private final Builder config;
