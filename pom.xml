@@ -5,11 +5,27 @@
 
 	<groupId>com.wolandsoft</groupId>
 	<artifactId>dial-ref-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>dial-ref-client</name>
 	<url>http://maven.apache.org</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<distributionManagement>
+		<repository>
+			<id>bintray-alexs20-com.wolandsoft</id>
+			<name>alexs20-com.wolandsoft</name>
+			<url>https://api.bintray.com/maven/alexs20/com.wolandsoft/dial-ref-client/;publish=1</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,10 +42,34 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
-		<finalName>dial-client</finalName>
+		<finalName>dial-ref-client</finalName>
 		<plugins>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
