@@ -34,18 +34,15 @@ public class SSDPMSearchService implements Closeable {
 	private final static int MC_PORT = 1900;
 	private final static String M_SEARCH_RESOURCE = "m-search.msg";
 
+	private final Builder config;
 	private final String discoverMessage;
 	private final byte[] recvBuffer = new byte[1400];
 	private final ScheduledExecutorService scheduler;
 	private MulticastSocket serverSocket;
-	private final List<SSDPMSearchListener> listeners;
-	private final long discoveryInterval;
 
-	private SSDPMSearchService(String osName, String osVersion, String productName, String productVersion, List<SSDPMSearchListener> listeners,
-			long discoveryInterval) {
-		this.discoverMessage = Resource.read(M_SEARCH_RESOURCE, osName, osVersion, productName, productVersion);
-		this.listeners = listeners;
-		this.discoveryInterval = discoveryInterval;
+	private SSDPMSearchService(Builder config) {
+		this.config = config;
+		this.discoverMessage = Resource.read(M_SEARCH_RESOURCE, config.osName, config.osVersion, config.productName, config.productVersion);
 		this.scheduler = Executors.newScheduledThreadPool(2);
 		run();
 	}
@@ -66,7 +63,7 @@ public class SSDPMSearchService implements Closeable {
 								String response = new String(packet.getData(), packet.getOffset(), packet.getLength());
 								SSDPMSearchResponce sspdResp = SSDPMSearchParser.parse(response);
 								if (sspdResp != null) {
-									for (SSDPMSearchListener listener : listeners) {
+									for (SSDPMSearchListener listener : config.listeners) {
 										scheduler.submit(new Runnable() {
 											@Override
 											public void run() {
@@ -100,7 +97,7 @@ public class SSDPMSearchService implements Closeable {
 						}
 					}
 				}
-			}, 0, discoveryInterval, TimeUnit.MILLISECONDS);
+			}, 0, config.discoveryInterval, TimeUnit.MILLISECONDS);
 		} catch (Exception ex) {
 			throw new InternalException(ex.getMessage(), ex);
 		}
@@ -146,13 +143,13 @@ public class SSDPMSearchService implements Closeable {
 			return this;
 		}
 
-		public Builder withDiscoveryInterval(long seconds) {
-			this.discoveryInterval = seconds;
+		public Builder withDiscoveryInterval(long milliSeconds) {
+			this.discoveryInterval = milliSeconds;
 			return this;
 		}
 
 		public SSDPMSearchService build() {
-			return new SSDPMSearchService(osName, osVersion, productName, productVersion, listeners, discoveryInterval);
+			return new SSDPMSearchService(this);
 		}
 	}
 }

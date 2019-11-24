@@ -33,16 +33,10 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 
 	private Map<String, DiscoveredDevice> devicesMap = Collections.synchronizedMap(new HashMap<String, DiscoveredDevice>());
 	private final ScheduledExecutorService scheduler;
-	private final long revalidationPeriod;
-	private final long connectTimeout;
-	private final long readTimeout;
-	private final List<UPnPDescriptionListener> listeners;
+	private final Builder config;
 
-	private UPnPDescriptionService(long revalidationPeriod, long connectTimeout, long readTimeout, List<UPnPDescriptionListener> listeners) {
-		this.revalidationPeriod = revalidationPeriod;
-		this.connectTimeout = connectTimeout;
-		this.readTimeout = readTimeout;
-		this.listeners = listeners;
+	private UPnPDescriptionService(Builder config) {
+		this.config = config;
 		this.scheduler = Executors.newScheduledThreadPool(1);
 		run();
 	}
@@ -58,10 +52,10 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 					while (i.hasNext()) {
 						String key = i.next();
 						DiscoveredDevice device = devicesMap.get(key);
-						if ((device.getUpdatedAt().getTime() + revalidationPeriod) < System.currentTimeMillis()) {
+						if ((device.getUpdatedAt().getTime() + config.revalidationPeriod) < System.currentTimeMillis()) {
 							if (!revalidateDevice(device)) {
 								i.remove();
-								for (UPnPDescriptionListener listener : listeners) {
+								for (UPnPDescriptionListener listener : config.listeners) {
 									scheduler.submit(new Runnable() {
 										@Override
 										public void run() {
@@ -75,15 +69,15 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 				}
 
 			}
-		}, revalidationPeriod, revalidationPeriod, TimeUnit.MILLISECONDS);
+		}, config.revalidationPeriod, config.revalidationPeriod, TimeUnit.MILLISECONDS);
 	}
 
 	private boolean revalidateDevice(DiscoveredDevice device) {
 		try {
 			URL url = device.getMSearchResponce().getLocation();
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setConnectTimeout((int) connectTimeout);
-			conn.setReadTimeout((int) readTimeout);
+			conn.setConnectTimeout((int) config.connectTimeout);
+			conn.setReadTimeout((int) config.readTimeout);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
 			conn.connect();
@@ -121,7 +115,7 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 			if (revalidateDevice(device)) {
 				devicesMap.put(device.getMSearchResponce().getUsn(), device);
 				DiscoveredDevice addedDevice = device;
-				for (UPnPDescriptionListener listener : listeners) {
+				for (UPnPDescriptionListener listener : config.listeners) {
 					scheduler.submit(new Runnable() {
 						@Override
 						public void run() {
@@ -152,18 +146,18 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 		private long readTimeout = TimeUnit.SECONDS.toMillis(2);
 		private List<UPnPDescriptionListener> listeners = new ArrayList<>();
 
-		public Builder withRevalidationPeriod(long revalidationPeriod) {
-			this.revalidationPeriod = revalidationPeriod;
+		public Builder withRevalidationPeriod(long milliSeconds) {
+			this.revalidationPeriod = milliSeconds;
 			return this;
 		}
 
-		public Builder withConnectTimeout(long connectTimeout) {
-			this.connectTimeout = connectTimeout;
+		public Builder withConnectTimeout(long milliSeconds) {
+			this.connectTimeout = milliSeconds;
 			return this;
 		}
 
-		public Builder withReadTimeout(long readTimeout) {
-			this.readTimeout = readTimeout;
+		public Builder withReadTimeout(long milliSeconds) {
+			this.readTimeout = milliSeconds;
 			return this;
 		}
 
@@ -173,7 +167,7 @@ public class UPnPDescriptionService implements SSDPMSearchListener, Closeable {
 		}
 
 		public UPnPDescriptionService build() {
-			return new UPnPDescriptionService(revalidationPeriod, connectTimeout, readTimeout, listeners);
+			return new UPnPDescriptionService(this);
 		}
 	}
 }
