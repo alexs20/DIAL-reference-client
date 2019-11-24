@@ -20,6 +20,18 @@ That service keep list of currently discovered devices, obtains additional metad
 This service also implements the "SSDPMSearchListener" interface, so it could be passed directly as alistener into "SSDPMSearchService".
 See the ["DiscoveryController"](https://raw.githubusercontent.com/alexs20/DIAL-reference-client/development/src/example/java/DiscoveryController.java) example.
  
+**How to WOL**
 
+TBD
 
+**How to query application**
 
+TBD
+
+**How to lunch application**
+
+TBD
+
+**How to stop application**
+
+TBD
