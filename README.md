@@ -13,12 +13,12 @@ In order to run devices discovery code you need to use classes from "com.wolands
 
 The first and main service is a "SSDPMSearchService".
 It produces a broadcast messages every 10 seconds, receives responses, parses them and delivers them to "SSDPMSearchListener".
-See the "DiscoveryMSearch" example.
+See the ["DiscoveryMSearch"](https://raw.githubusercontent.com/alexs20/DIAL-reference-client/development/src/example/java/DiscoveryMSearch.java) example.
 
 As a second step, the data delivered to "SSDPMSearchListener" should be pushed into "UPnPDescriptionService".
 That service keep list of currently discovered devices, obtains additional metadata and delivers the final data to "UPnPDescriptionListener".
 This service also implements the "SSDPMSearchListener" interface, so it could be passed directly as alistener into "SSDPMSearchService".
-See the "DiscoveryController" example.
+See the ["DiscoveryController"](https://raw.githubusercontent.com/alexs20/DIAL-reference-client/development/src/example/java/DiscoveryController.java) example.
  
 
 
