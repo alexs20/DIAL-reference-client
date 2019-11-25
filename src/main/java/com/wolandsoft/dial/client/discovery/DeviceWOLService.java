@@ -12,6 +12,7 @@
 */
 package com.wolandsoft.dial.client.discovery;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.wolandsoft.dial.client.common.InternalException;
 
-public class DeviceWOLService implements SSDPMSearchListener {
+public class DeviceWOLService implements Closeable, SSDPMSearchListener {
 	private static final int PORT = 9;
 	private Map<String, Long> usns = Collections.synchronizedMap(new HashMap<>());
 
@@ -163,5 +164,10 @@ public class DeviceWOLService implements SSDPMSearchListener {
 		public DeviceWOLService build() {
 			return new DeviceWOLService();
 		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		scheduler.shutdown();
 	}
 }

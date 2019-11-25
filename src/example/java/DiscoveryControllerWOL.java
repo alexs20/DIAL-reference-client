@@ -53,6 +53,7 @@ public class DiscoveryControllerWOL {
 		Thread.sleep(15000);
 
 		ss.close();
+		wol.close();
 		ds.close();
 	}
 
