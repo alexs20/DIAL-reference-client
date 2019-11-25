@@ -28,7 +28,7 @@ See the ["DiscoveryControllerWOL"](https://github.com/alexs20/DIAL-reference-cli
 **How to query, launch and stop application**
 
 Package "com.wolandsoft.dial.client.rest" contains Callable classes to help with Querying, Launching and Stopping an application on discovered device.
-See the "ManageApp" example for the details. 
+See the ["ManageApp"](https://raw.githubusercontent.com/alexs20/DIAL-reference-client/development/src/example/java/ManageApp.java) example for the details. 
 
 This package also has a few helper classes to deal with a hidden system application and to bring the device into Low Power Mode.
 
