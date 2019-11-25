@@ -1,4 +1,5 @@
-**Reference implementation of DIAL 2.2 client**
+**Reference implementation of DIAL 2.2 client** 
+[ ![Download](https://api.bintray.com/packages/alexs20/com.wolandsoft/dial-ref-client/images/download.svg?version=0.0.2) ](https://bintray.com/alexs20/com.wolandsoft/dial-ref-client/0.0.2/link)
 
 For more details about the DIAL protocol specification please visit [dial-multiscreen.org](http://www.dial-multiscreen.org/)
 
@@ -6,6 +7,21 @@ This library was build with keeping the Android support in mind and therefore ha
 
 Please note that when using in Android app the "android.permission.INTERNET" permission is required.
 
+Maven dependency snippet
+
+```
+ <dependency>
+  <groupId>com.wolandsoft</groupId>
+  <artifactId>dial-ref-client</artifactId>
+  <version>0.0.2</version>
+ </dependency>
+```
+
+Gradle dependency snippet
+
+```
+compile 'com.wolandsoft:dial-ref-client:0.0.2'
+```
 
 **How to discovery**
 
