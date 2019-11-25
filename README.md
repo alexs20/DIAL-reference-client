@@ -22,7 +22,8 @@ See the ["DiscoveryController"](https://raw.githubusercontent.com/alexs20/DIAL-r
  
 **How to WOL**
 
-TBD
+When Wake-On-Lan functionality is required the "DeviceWOLService" service could be used by adding it as a listener to the "SSDPMSearchService". After that the wakeup(...) function should be used to wake the device up. Please see the specification document for the details about parameters.
+See the "DiscoveryControllerWOL" example. 
 
 **How to query application**
 
