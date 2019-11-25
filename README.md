@@ -25,14 +25,11 @@ See the ["DiscoveryController"](https://raw.githubusercontent.com/alexs20/DIAL-r
 When Wake-On-Lan functionality is required the "DeviceWOLService" service could be used by adding it as a listener to the "SSDPMSearchService". After that the wakeup(...) function should be used to wake the device up. Please see the specification document for the details about parameters.
 See the "DiscoveryControllerWOL" example. 
 
-**How to query application**
+**How to query, launch and stop application**
 
-TBD
+Package "com.wolandsoft.dial.client.rest" contains Callable classes to help with Querying, Launching and Stopping an application on discovered device.
+See the "ManageApp" example for the details. 
 
-**How to lunch application**
+This package also has a few helper classes to deal with a hidden system application and to bring the device into Low Power Mode.
 
-TBD
 
-**How to stop application**
-
-TBD
